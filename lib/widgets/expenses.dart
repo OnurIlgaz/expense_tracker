@@ -55,6 +55,7 @@ class _ExpensesState extends State<Expenses> {
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
+      useSafeArea: true,
       isScrollControlled: true,
       context: context,
       builder: (ctx) {
@@ -70,6 +71,10 @@ class _ExpensesState extends State<Expenses> {
       mainContent = ExpensesList(_removeExpense, expenses: _registeredExpenses);
     }
 
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    final wideMode = width > height;
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -84,7 +89,15 @@ class _ExpensesState extends State<Expenses> {
           style: TextStyle(fontSize: 15),
         ),
       ),
-      body: Column(
+      body: wideMode ?
+      Row(
+        children: [
+          Expanded(child: Chart(_registeredExpenses)),
+          Expanded(child: mainContent),
+        ],
+      )
+      :
+      Column(
         children: [
           Chart(_registeredExpenses),
           Expanded(child: mainContent),

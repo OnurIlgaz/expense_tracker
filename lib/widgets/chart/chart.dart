@@ -26,9 +26,12 @@ class Chart extends StatelessWidget{
       maxTotalExpense = 1;
     }
 
+    final width = MediaQuery.of(context).size.width;
+    final wideMode = width > 600;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-      height: 180,
+      height: wideMode ? double.infinity : 180,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),

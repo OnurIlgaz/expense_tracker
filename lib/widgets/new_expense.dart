@@ -72,78 +72,82 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
-      child: Column(
-        children: [
-          TextField(
-            controller: _titleController,
-            maxLength: 50,
-            decoration: const InputDecoration(labelText: "Title"),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _amountController,
-                  keyboardType: TextInputType.number,
-                  maxLength: 50,
-                  decoration: const InputDecoration(
-                    prefixText: "\$ ",
-                    label: Text("Amount"),
+    final overFlow = MediaQuery.of(context).viewInsets.bottom;
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + overFlow),
+        child: Column(
+          children: [
+            TextField(
+              controller: _titleController,
+              maxLength: 50,
+              decoration: const InputDecoration(labelText: "Title"),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _amountController,
+                    keyboardType: TextInputType.number,
+                    maxLength: 50,
+                    decoration: const InputDecoration(
+                      prefixText: "\$ ",
+                      label: Text("Amount"),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(_selectedDate == null
-                        ? "No date selected"
-                        : formatter.format(_selectedDate!)),
-                    IconButton(
-                      onPressed: _presentDatePicker,
-                      icon: const Icon(Icons.calendar_today),
-                    ),
-                  ],
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(_selectedDate == null
+                          ? "No date selected"
+                          : formatter.format(_selectedDate!)),
+                      IconButton(
+                        onPressed: _presentDatePicker,
+                        icon: const Icon(Icons.calendar_today),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              DropdownButton(
-                  value: _selectedCategory,
-                  items: Category.values
-                      .map((category) => DropdownMenuItem(
-                            value: category,
-                            child: Text(category.name.toString()),
-                          ))
-                      .toList(),
-                  onChanged: (val) {
-                    if (val == null) {
-                      return;
-                    }
-                    setState(() {
-                      _selectedCategory = val;
-                    });
-                  }),
-              const Spacer(),
-              Row(children: [
-                TextButton(
-                  onPressed: _closeOverlay,
-                  child: const Text("Cancel"),
-                ),
-                ElevatedButton(
-                  onPressed: _submitExpenseData,
-                  child: const Text("Add Expense"),
-                ),
-              ])
-            ],
-          )
-        ],
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                DropdownButton(
+                    value: _selectedCategory,
+                    items: Category.values
+                        .map((category) => DropdownMenuItem(
+                              value: category,
+                              child: Text(category.name.toString()),
+                            ))
+                        .toList(),
+                    onChanged: (val) {
+                      if (val == null) {
+                        return;
+                      }
+                      setState(() {
+                        _selectedCategory = val;
+                      });
+                    }),
+                const Spacer(),
+                Row(children: [
+                  TextButton(
+                    onPressed: _closeOverlay,
+                    child: const Text("Cancel"),
+                  ),
+                  ElevatedButton(
+                    onPressed: _submitExpenseData,
+                    child: const Text("Add Expense"),
+                  ),
+                ])
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
